@@ -56,7 +56,5 @@ public class ContinuousSubSetTest {
 		result = ContinuousSubSet.findMaxContinuousSubSet(manyElementsArray);
 		logger.info("output: {}", result);
 		Assert.assertEquals(result.length, 5);
-
-
 	}
 }
