@@ -7,7 +7,7 @@ package com.github.hxrs;
  *
  */
 public class ReverseWords {
-    public static String reverseWords(String s){
+    public static String reverseWords(String s) {
     	// s is null
     	if (s == null) {
     		throw new NullPointerException("input string is null");
