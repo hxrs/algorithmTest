@@ -8,11 +8,19 @@ import java.util.Arrays;
  * For example:<br>
  * Three arrays a[l], b[m], c[n]. Assume the three elements are a[i], b[j], c[k]<br>
  * distance = max(|a[i]-b[j]|, |b[j]-c[k]|,|a[i]-c[k]|)
- * 
+ *
  * @author huanxiao
- * 
+ *
  */
 public class MinDistanceOfThreeTuples {
+	/**
+	 * Given three sorted arrays with incremental order, find one element in each
+     * array, make sure the distance of the three elements is minimum.
+	 * @param a input array 1
+	 * @param b input array 2
+	 * @param c input array 3
+	 * @return three tuples
+	 */
 	public static int[] findMinDistanceElments(int[] a, int[] b, int[] c) {
 		if (a == null || b == null || c == null) {
 			throw new NullPointerException(
@@ -25,39 +33,31 @@ public class MinDistanceOfThreeTuples {
 
 		int distance = caculateDistance(a[0], b[0], c[0]);
 		int minValue;
-
 		int aIndex = 0;
 		int bIndex = 0;
 		int cIndex = 0;
-		while (aIndex < a.length && bIndex < b.length && cIndex < c.length) {
-			minValue = min(a[aIndex], b[bIndex], c[cIndex]);
-			if (minValue == a[aIndex]) {
-				aIndex++;
-				if(aIndex == a.length) {
-					break;
-				}
-			} else if (minValue == b[bIndex]) {
-				bIndex++;
-				if(bIndex == b.length) {
-					break;
-				}
+		int i = 0;
+		int j = 0;
+		int k = 0;
+		while (i < a.length && j < b.length && k < c.length) {
+			minValue = min(a[i], b[j], c[k]);
+			if (minValue == a[i]) {
+				i++;
+			} else if (minValue == b[j]) {
+				j++;
 			} else {
-				cIndex++;
-				if(cIndex == c.length) {
-					break;
-				}
+				k++;
 			}
-			int currentDist = caculateDistance(a[aIndex], b[bIndex], c[cIndex]);
+			if (i == a.length || j == b.length || k == c.length) {
+				break;
+			}
+			int currentDist = caculateDistance(a[i], b[j], c[k]);
 			if (currentDist < distance) {
 				distance = currentDist;
+				aIndex = i;
+				bIndex = j;
+				cIndex = k;
 			}
-		}
-		if (aIndex == a.length) {
-			aIndex--;
-		} else if (bIndex == b.length) {
-			bIndex--;
-		} else {
-			cIndex--;
 		}
 		return new int[] { a[aIndex], b[bIndex], c[cIndex] };
 	}
