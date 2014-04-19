@@ -1,17 +1,15 @@
 package com.github.hxrs;
 
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Given n points on a 2D plane, find the maximum number of points that lie on
  * the same straight line.
- *
+ * 
  * @author huanxiao
- *
+ * 
  */
 
 public class MaxNumberPonitsOnSameLine {
@@ -21,7 +19,7 @@ public class MaxNumberPonitsOnSameLine {
 			throw new NullPointerException("the input points array is null");
 		}
 		if (points.length == 0) {
-			throw new IllegalArgumentException("the length of points is zero!");
+			return 0;
 		}
 		if (points.length == 1) {
 			return 1;
@@ -30,46 +28,59 @@ public class MaxNumberPonitsOnSameLine {
 		 * Integer.max represents the two points on the vertical line, zero
 		 * value means the two points on the horizontal line
 		 */
-		List<Double> slopeFactors = new LinkedList<Double>();
+		int maxNum = 0;
 		// initialize the slopeFactors
 		for (int i = 0; i < points.length - 1; i++) {
-			Set<Double> sfInLine = new HashSet<Double>();
+			Map<Double, Integer> slopeFactorsMap = new HashMap<Double, Integer>();
+			int numOfsameValue = 0;
 			for (int j = i + 1; j < points.length; j++) {
-				sfInLine.add(caculateSlopeFactor(points[i], points[j]));
+				if (!isEqual(points[i], points[j])) {
+					double slope = caculateSlopeFactor(points[i], points[j]);
+					if (slopeFactorsMap.containsKey(slope)) {
+						int newValue = slopeFactorsMap.get(slope) + 1;
+						slopeFactorsMap.put(slope, newValue);
+					} else {
+						int newValue = 2;
+						slopeFactorsMap.put(slope, newValue);
+					}
+				} else {
+					numOfsameValue++; 
+				}
 			}
-			slopeFactors.addAll(sfInLine);
+			int maxValueOneLine;
+			if (slopeFactorsMap.size() != 0) {
+				maxValueOneLine = Collections.max(slopeFactorsMap.values()) + numOfsameValue;
+			} else {
+				maxValueOneLine = 1 + numOfsameValue;
+			}
+			if (maxNum < maxValueOneLine) {
+				maxNum = maxValueOneLine;
+			}
 		}
-		return getMaxNumOfSameValue(slopeFactors);
+		return maxNum;
 	}
 
 	private static double caculateSlopeFactor(Point a, Point b) {
 		if (a.x == b.x) {
 			return Double.MAX_VALUE;
 		}
-		return ((double)(b.y - a.y)) / (b.x - a.x);
-	}
-
-	private static int getMaxNumOfSameValue(List<Double> list) {
-		if (list == null || list.size() == 0) {
-			return 0;
+		double slope = ((double) (b.y - a.y)) / (b.x - a.x);
+		if (Double.compare(slope, -0.0) == 0) {
+			return 0.0;
+		} else {
+			return slope;
 		}
-		int max = 1;
-		Collections.sort(list);
-		Double preValue = list.remove(0);
-		int tempMax = 1;
-		for (Double d : list) {
-			if (d.equals(preValue)) {
-				tempMax++;
-			} else {
-				tempMax = 1;
-			}
-			if (max < tempMax) {
-				max = tempMax;
-			}
-			preValue = d;
-		}
-		return max;
 	}
+	
+	private static boolean isEqual(Point a, Point b) {
+		if (a == b) {
+			return true;
+		}
+		if (a.x == b.x && a.y == b.y) {
+			return true;
+		}
+		return false;
+	}	
 
 	/**
 	 * @param args
