@@ -9,17 +9,68 @@ package com.github.hxrs;
 public class SortList {
 
 	public static ListNode sortList(ListNode head) {
-		if (head == null) {
-			throw new NullPointerException("parameter is null!");
-		}
-		if (head.next == null) {
+		if (head == null || head.next == null) {
 			return head;
 		}
-		ListNode lastNode = findLastNode(head);
-		quickSortList(head, lastNode);
+		head = mergeSort(head);
+		//ListNode lastNode = findLastNode(head);
+		//quickSortList(head, lastNode);
 		return head;
 	}
 
+	//merge sort
+	private static ListNode mergeSort(ListNode head) {
+		if (head == null || head.next == null) {
+			return head;
+		}
+		ListNode middleNode = getMiddleNode(head);
+		ListNode nextPartHead = middleNode.next;
+		middleNode.next = null;
+		head = mergeSort(head);
+		nextPartHead = mergeSort(nextPartHead);
+		return merge(head, nextPartHead);
+	}
+
+	private static ListNode merge(ListNode firstHead, ListNode secondHead) {
+		if (firstHead == null) {
+			return secondHead;
+		}
+		if (secondHead == null) {
+			return firstHead;
+		}
+		ListNode head = new ListNode(0);
+		ListNode p = head;
+		while (firstHead != null && secondHead != null) {
+			if (firstHead.val <= secondHead.val) {
+				p.next = firstHead;
+				firstHead = firstHead.next;
+			} else {
+				p.next = secondHead;
+				secondHead = secondHead.next;
+			}
+			p = p.next;
+		}
+		if (firstHead == null) {
+			p.next = secondHead;
+		} else {
+			p.next = firstHead;
+		}
+		ListNode result = head.next;
+		head = null;
+		return result;
+	}
+
+	private static ListNode getMiddleNode(ListNode head) {
+		ListNode slow = head;
+		ListNode fast = head;
+		while (fast.next != null && fast.next.next != null) {
+			slow = slow.next;
+			fast = fast.next.next;
+		}
+		return slow;
+	}
+
+	//quick sort
 	private static void quickSortList(ListNode head, ListNode last) {
 		if (head == null || last == null) {
 			return;
@@ -117,6 +168,34 @@ public class SortList {
 				i = i.next;
 			}
 			return "ListNode [" + sb.toString() +"]";
+		}
+
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + ((next == null) ? 0 : next.hashCode());
+			result = prime * result + val;
+			return result;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			ListNode other = (ListNode) obj;
+			if (next == null) {
+				if (other.next != null)
+					return false;
+			} else if (!next.equals(other.next))
+				return false;
+			if (val != other.val)
+				return false;
+			return true;
 		}
 	}
 }
