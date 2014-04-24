@@ -2,9 +2,9 @@ package com.github.hxrs;
 
 /**
  * Sort a linked list in O(n log n) time using constant space complexity.
- *
+ * 
  * @author huanxiao
- *
+ * 
  */
 public class SortList {
 
@@ -13,12 +13,40 @@ public class SortList {
 			return head;
 		}
 		head = mergeSort(head);
-		//ListNode lastNode = findLastNode(head);
-		//quickSortList(head, lastNode);
+		// ListNode lastNode = findLastNode(head);
+		// quickSortList(head, lastNode);
 		return head;
 	}
 
-	//merge sort
+	public static ListNode insertionSortList(ListNode head) {
+		if (head == null || head.next == null) {
+			return head;
+		}
+		ListNode p = head;
+		ListNode q = p.next;
+		p.next = null;
+		ListNode m = p;
+		while (q != null) {
+			while (p != null && p.val < q.val) {
+				m = p;
+				p = p.next;
+			}
+			ListNode tempNode = q.next;
+
+			if (p == head) {
+				q.next = p;
+				head = q;
+			} else {
+				q.next = p;
+				m.next = q;
+			}
+			p = head;
+			q = tempNode;
+		}
+		return head;
+	}
+
+	// merge sort
 	private static ListNode mergeSort(ListNode head) {
 		if (head == null || head.next == null) {
 			return head;
@@ -70,7 +98,7 @@ public class SortList {
 		return slow;
 	}
 
-	//quick sort
+	// quick sort
 	private static void quickSortList(ListNode head, ListNode last) {
 		if (head == null || last == null) {
 			return;
@@ -95,7 +123,7 @@ public class SortList {
 		ListNode ithNode = new ListNode(0);
 		ithNode.next = head;
 		ListNode jthNode = head;
-		while (jthNode != null && jthNode != last){
+		while (jthNode != null && jthNode != last) {
 			if (jthNode.val < lastVal) {
 				ithNode = ithNode.next;
 				exchange(ithNode, jthNode);
@@ -103,7 +131,7 @@ public class SortList {
 			jthNode = jthNode.next;
 		}
 		exchange(ithNode.next, last);
-		return ithNode; //return the node before the partition point
+		return ithNode; // return the node before the partition point
 	}
 
 	private static ListNode findLastNode(ListNode node) {
@@ -162,12 +190,12 @@ public class SortList {
 			ListNode i = next;
 			StringBuilder sb = new StringBuilder();
 			sb.append(val);
-			while(i != null) {
+			while (i != null) {
 				sb.append(", ");
 				sb.append(i.val);
 				i = i.next;
 			}
-			return "ListNode [" + sb.toString() +"]";
+			return "ListNode [" + sb.toString() + "]";
 		}
 
 		@Override

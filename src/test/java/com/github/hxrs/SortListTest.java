@@ -50,4 +50,10 @@ public class SortListTest {
 		ListNode actual = SortList.sortList(unordered);
 		assertEquals(actual, ordered, "The nodes is not ordered");
 	}
+	
+	@Test(dataProvider = "testData")
+	public void testInsertionSortList(ListNode unordered, ListNode ordered) {
+		ListNode actual = SortList.insertionSortList(unordered);
+		assertEquals(actual, ordered, "The nodes is not ordered");
+	}
 }
