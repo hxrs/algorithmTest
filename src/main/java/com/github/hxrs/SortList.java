@@ -2,9 +2,9 @@ package com.github.hxrs;
 
 /**
  * Sort a linked list in O(n log n) time using constant space complexity.
- * 
+ *
  * @author huanxiao
- * 
+ *
  */
 public class SortList {
 
