@@ -140,4 +140,15 @@ public class BinaryTreeTravelTest {
 		assertTrue(isEqual(actual, expectedResult), "The result is not right");
 	}
 
+	@Test(dataProvider = "postorderTraversalData")
+	public void postorderTraversalStack(TreeNode root,
+			List<Integer> expectedResult) {
+		logger.info("=====================postorder traversal with stack method ================ ");
+		logger.info("expected Result: {}", expectedResult.toString());
+		BinaryTreeTravel btravel = new BinaryTreeTravel();
+		ArrayList<Integer> actual = btravel.postorderTraversalStack(root);
+		logger.info("actual Result: {}", actual.toString());
+		assertTrue(isEqual(actual, expectedResult), "The result is not right");
+	}
+
 }

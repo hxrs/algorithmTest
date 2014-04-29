@@ -118,18 +118,27 @@ public class BinaryTreeTravel {
     }
 
     public ArrayList<Integer> postorderTraversalStack(TreeNode root) {
-        return null;
-    }
-
-    public ArrayList<Integer> preorderTraversalMorris(TreeNode root) {
-        return null;
-    }
-
-    public ArrayList<Integer> inorderTraversalMorris(TreeNode root) {
-        return null;
-    }
-
-    public ArrayList<Integer> postorderTraversalMorris(TreeNode root) {
-        return null;
+    	if (root == null) {
+    		return null;
+    	}
+    	ArrayList<Integer> list = new ArrayList<Integer>();
+    	LinkedList<TreeNode> tempStack = new LinkedList<TreeNode>();
+    	LinkedList<TreeNode> outputStack = new LinkedList<TreeNode>();
+    	TreeNode p = root;
+    	tempStack.push(p);
+    	while (!tempStack.isEmpty()) {
+    		p = tempStack.pop();
+    		outputStack.push(p);
+    		if (p.left != null) {
+    			tempStack.push(p.left);
+    		}
+    		if (p.right != null) {
+    			tempStack.push(p.right);
+    		}
+    	}
+    	while (!outputStack.isEmpty()) {
+    		list.add(outputStack.pop().val);
+    	}
+        return list;
     }
 }
