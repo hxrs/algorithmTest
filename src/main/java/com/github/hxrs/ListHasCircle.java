@@ -22,6 +22,31 @@ public class ListHasCircle {
     	
         return false;
     }
+    
+    public ListNode detectCirclePoint(ListNode head) {
+    	if (head == null) {
+    		return head;
+    	}
+    	
+    	ListNode slow = head;
+    	ListNode fast = head;
+    	while (fast.next != null && fast.next.next != null) {
+    		slow = slow.next;
+    		fast = fast.next.next;
+    		if (slow == fast) {
+    			ListNode p = head;
+    			ListNode q = slow;
+    			while (p != q) {
+    				p = p.next;
+    				q = q.next;
+    			}
+    			return p;
+    		}
+    	}
+    	return null;
+    	
+    }
+    
 	public static class ListNode {
 		int val;
 		ListNode next;
@@ -33,7 +58,7 @@ public class ListHasCircle {
 
 		@Override
 		public String toString() {
-			return "ListNode [val=" + val + ", next=" + next + "]";
+			return "ListNode [val=" + val + "]";
 		}	
 	}
 	
@@ -52,8 +77,10 @@ public class ListHasCircle {
 		node2.next = node1;
 		ListHasCircle list = new ListHasCircle();
 		System.out.println(list.hasCycle(head));
+		System.out.println(list.detectCirclePoint(head));
 		node1.next = node3;
 		System.out.println(list.hasCycle(head));
+		System.out.println(list.detectCirclePoint(head));
 	}
 
 }
